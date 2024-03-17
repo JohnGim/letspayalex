@@ -1,0 +1,22 @@
+# Node specific
+node_modules/
+npm-debug.log
+
+# macOS specific
+.DS_Store
+
+# React specific
+/frontend/build/
+/frontend/node_modules/
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
+*.swo
+
