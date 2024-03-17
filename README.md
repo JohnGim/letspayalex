@@ -6,7 +6,14 @@ Install node.js, e.g. via `brew install node`. Then run `npm install` in the roo
 # Start the server
 To start the backend navigate to the `backend` directory and run `node server.js`.
 
-To start the frontend navigate to the `frontend` directory and run `npm start`. 
- 
+To start the frontend navigate to the `frontend` directory and run `npm start`.
+
 # Development
 To automatically restart your server whenever you make changes, install nodemon globally with `npm install -g nodemon` and then start your server with `nodemon server.js`.
+
+## Editor config
+When using VSC, install EditorConfig plugin.
+
+## TODO: do we need typescript?
+`npm install -g typescript`
+
