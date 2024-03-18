@@ -2,6 +2,9 @@
 node_modules/
 npm-debug.log
 
+# package locks
+package-lock.json
+
 # macOS specific
 .DS_Store
 
