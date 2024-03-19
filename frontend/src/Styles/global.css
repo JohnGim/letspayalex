@@ -1,0 +1,41 @@
+/* Styles/global.css */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #f8f8f8; /* Light gray */
+    color: #333; /* Dark gray */
+    margin: 0; /* Remove default body margin */
+    padding: 0; /* Remove default body padding */
+  }
+  
+  .dark-banner {
+    background-color: #333; /* Dark gray */
+    color: #fff; /* White text */
+    padding: 10px 20px; /* Adjust padding to make it less prominent */
+  }
+  
+  .container {
+    width: 90%; /* 90% width of viewport */
+    max-width: 800px; /* Maximum width */
+    margin: 20px auto; /* Center container horizontally with spacing from top */
+    padding: 20px; /* Add padding to create space around content */
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  p {
+    margin-bottom: 20px; /* Add space between paragraphs */
+  }
+  
+  a {
+    color: #007bff; /* Apple blue */
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover {
+    color: #0056b3; /* Darker blue on hover */
+  }
+  

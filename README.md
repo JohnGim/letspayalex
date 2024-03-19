@@ -11,9 +11,11 @@ To start the frontend navigate to the `frontend` directory and run `npm start`.
 # Development
 To automatically restart your server whenever you make changes, install nodemon globally with `npm install -g nodemon` and then start your server with `nodemon server.js`.
 
+## lint
+We use [jshint](https://jshint.com/install/) for linting. To run, `jshint letspayalex`.
+
 ## Editor config
 When using VSC, install EditorConfig plugin.
 
 ## TODO: do we need typescript?
 `npm install -g typescript`
-
