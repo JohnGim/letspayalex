@@ -1,3 +1,3 @@
-## What - describe what you are doing
+### What
 
-## How - describe how you are doing it
+### How
