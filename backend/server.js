@@ -26,10 +26,11 @@ app.use(
     origin: frontendUrl, // replace with your frontend server's URL
   })
 )
+
 if (process.env.NODE_ENV === "production") {
 } else {
   app.use(cors())
 }
 
-const port = process.env.BACKEND_PORT || 6002
+const port = process.env.BACKEND_PORT || 6000
 app.listen(port, () => console.log("Server is running on port " + port))
