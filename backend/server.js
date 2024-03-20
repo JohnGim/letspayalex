@@ -1,15 +1,14 @@
-const express = require("express")
-const cors = require("cors")
-const mongoose = require("mongoose")
-const authRoutes = require("./routes/auth")
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const authRoutes = require("./routes/auth");
+require("dotenv").config();
 
-require("dotenv").config()
-
-const app = express()
+const app = express();
 const mongodbUrl =
   `${process.env.MONGO_URL}:${process.env.MONGO_PORT}/letspayalex` ||
-  "mongodb://localhost:27017/letspayalex"
-const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000"
+  "mongodb://localhost:27017/letspayalex";
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
 
 mongoose
   .connect(mongodbUrl, {
@@ -17,19 +16,41 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => console.log("MongoDB connected..."))
-  .catch(err => console.log(err))
+  .catch((err) => console.log(err));
 
-app.use(express.json())
-app.use("/auth", authRoutes)
+app.use(express.json());
+app.use("/auth", authRoutes);
+
 app.use(
   cors({
-    origin: frontendUrl, // replace with your frontend server's URL
+    origin: 'http://localhost:3000', // replace with your frontend server's URL
   })
-)
-if (process.env.NODE_ENV === "production") {
-} else {
-  app.use(cors())
-}
+);
 
-const port = process.env.BACKEND_PORT || 6002
-app.listen(port, () => console.log("Server is running on port " + port))
+
+// Registration endpoint
+app.post("/api/register", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if email already exists in the database
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already exists" });
+    }
+
+    // Create a new user
+    const newUser = new User({ email, password });
+    await newUser.save();
+
+    // Return success response
+    res.status(201).json({ message: "User registered successfully" });
+  } catch (error) {
+    console.error("Error registering user:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+const port = process.env.BACKEND_PORT || 6002;
+app.listen(port, () => console.log("Server is running on port " + port));
