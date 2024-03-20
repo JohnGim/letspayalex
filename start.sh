@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Function to check if a process is listening on a port and kill it
 kill_process_on_port() {
   local port="$1"
   local pid="$(lsof -ti :$port)"
@@ -10,22 +9,40 @@ kill_process_on_port() {
   fi
 }
 
-# Function to start the backend
+ensure_db_folder() {
+  if [ ! -d "data/db" ]; then
+    echo "Creating db folder..."
+    mkdir -p data/db
+  fi
+}
+
 start_backend() {
   kill_process_on_port 6000 # Adjust the port number as needed
   cd backend || { echo "Error: Unable to navigate to the backend directory" ; exit 1; }
-  node server.js &
+  if [ "$1" = "deploy" ]
+  then
+      node server.js &
+  else
+      nodemon server.js &
+  fi
 }
 
-# Function to start the frontend
 start_frontend() {
   kill_process_on_port 3000 # Adjust the port number as needed
   cd ../frontend || { echo "Error: Unable to navigate to the frontend directory" ; exit 1; }
   npm start
 }
 
-# Main function
+start_mongo() {
+  ensure_db_folder
+  kill_process_on_port 27017
+  mongod --dbpath data/db &
+}
+
 main() {
+  echo "Starting MongoDB..."
+  start_mongo
+
   echo "Starting the backend..."
   start_backend
 
@@ -33,5 +50,4 @@ main() {
   start_frontend
 }
 
-# Call the main function
 main
