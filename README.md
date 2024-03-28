@@ -13,11 +13,11 @@ Install mongodb locally via
 
 ## Run the Application
 
-To start the backend navigate to the `backend` directory and run `node server.js`.
+To start the backend navigate to the `backend` directory and run `npm run server`.
 
 To start the frontend navigate to the `frontend` directory and run `npm start`.
 
-The server is located at port `6000` and the frontend is loaded on port `3000`.
+The server is located at port `6001` and the frontend is loaded on port `3001`.
 
 ## Development
 
