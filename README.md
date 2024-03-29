@@ -4,14 +4,18 @@ Sharing is caring. This project makes it easier to share!
 
 ## Installation
 
-Install node.js, e.g. via `brew install node`. Then run `npm install` in the root directory of the project and in the `backend` and `frontend` directories. 
+Install node.js, e.g. via `brew install node`. Then run `npm install` in the root directory of the project and in the `backend` and `frontend` directories.
 
-Install mongodb locally via 
+Install mongodb locally via
+
 - `brew tap mongodb/brew`
 - `brew update`
 - `brew install mongodb-community@7.0`.
+- Set up a folder for the database, e.g. `mkdir -p data/db`.
 
 ## Run the Application
+
+Run the database with `mongod --dbpath data/db`.
 
 To start the backend navigate to the `backend` directory and run `npm run server`.
 
