@@ -1,5 +1,5 @@
-const express = require("express");
-const router = express.Router();
+const express = require("express")
+const router = express.Router()
 const Transaction = require("../models/Transaction")
 
 // This route handles submitting a transaction
@@ -8,7 +8,7 @@ router.post("/submit", async (req, res) => {
 
     // Check for missing fields
     if (!amount || !description) {
-        return res.status(400).json({ message: "Please provide amount and description" });
+        return res.status(400).json({ message: "Please provide amount and description" })
     }
 
     try {
@@ -17,13 +17,13 @@ router.post("/submit", async (req, res) => {
             amount,
             description,
             // You might also want to associate the transaction with a user here
-        });
+        })
 
         // Respond with success message
-        res.status(200).json({ message: "Transaction submitted successfully", transaction });
+        res.status(200).json({ message: "Transaction submitted successfully", transaction })
     } catch (error) {
-        console.error("Error submitting transaction:", error);
-        res.status(500).json({ message: "Internal server error" });
+        console.error("Error submitting transaction:", error)
+        res.status(500).json({ message: "Internal server error" })
     }
 })
 
