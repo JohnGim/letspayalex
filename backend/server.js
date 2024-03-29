@@ -3,8 +3,10 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcryptjs") // For password hashing
 const cors = require("cors")
 const https = require("https")
-
+const dotenv = require("dotenv")
 const authRoutes = require("./routes/auth")
+
+dotenv.config()
 
 const app = express()
 const port = process.env.REACT_APP_BACKEND_PORT || 6001
@@ -14,10 +16,9 @@ const frontendUrl =
 const mongoUrl =
   process.env.REACT_APP_DB_URL || "mongodb://localhost:27017/letspayalex"
 
-console.log("mongoUrl", mongoUrl)
-console.log("frontendUrl", frontendUrl)
+console.log("Url for mongo connection: ", mongoUrl)
+console.log("Url for frontend: ", frontendUrl)
 
-// Connect to MongoDB
 mongoose
   .connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB Connected"))
