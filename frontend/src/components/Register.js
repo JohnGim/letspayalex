@@ -1,11 +1,13 @@
 import React, { useState } from "react"
 import axios from "axios"
 import "../Styles/Login.css"
+import { useNavigate } from "react-router-dom"
 
 function Register() {
   const [username, setUsername] = useState("user") // Set default username
   const [password, setPassword] = useState("password") // Set default password
   const [successMessage, setSuccessMessage] = useState("")
+  const navigate = useNavigate() // Initialize useNavigate hook
 
   const register = async () => {
     try {
@@ -17,8 +19,8 @@ function Register() {
         },
       )
       localStorage.setItem("token", data.token)
-      setSuccessMessage("Registration Successful!") // Set success message upon successful registration
-      // Optionally, you can redirect or do something else here
+      setSuccessMessage("Registration Successful!")
+      navigate("/login")
     } catch (error) {
       console.error("An error occurred during registration:", error)
       // Display an error message to the user

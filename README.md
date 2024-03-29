@@ -31,7 +31,7 @@ To automatically restart your server whenever you make changes, install nodemon 
 
 ### lint
 
-We use [jshint](https://jshint.com/install/) for linting. To run, `jshint letspayalex`.
+We use [eslint](https://eslint.org/docs/latest/use/command-line-interface) for linting. To run, `npx eslint "frontend/**`.
 
 ### Editor config
 
