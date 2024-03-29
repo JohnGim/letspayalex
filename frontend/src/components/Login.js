@@ -20,6 +20,7 @@ function Login() {
         }
       )
       localStorage.setItem("token", data.token)
+      localStorage.setItem("username", username) // Store username in local storage
       // Redirect to Transaction landing page after successful login
       navigate("/transaction/submit")
     } catch (error) {

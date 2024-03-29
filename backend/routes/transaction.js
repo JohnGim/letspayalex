@@ -1,9 +1,10 @@
 const express = require("express")
 const router = express.Router()
 const Transaction = require("../models/Transaction")
+const authenticate = require("../utils/jwt");
 
 // This route handles submitting a transaction
-router.post("/submit", async (req, res) => {
+router.post("/submit", authenticate, async (req, res) => {
     const { amount, description } = req.body;
 
     // Check for missing fields

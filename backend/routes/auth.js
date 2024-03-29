@@ -1,8 +1,9 @@
-const express = require("express");
-const bcrypt = require("bcryptjs");
-const User = require("../models/User");
+const express = require("express")
+const bcrypt = require("bcryptjs")
+const User = require("../models/User")
 const generateToken = require("../utils/jwt");
-const router = express.Router();
+const authenticate = require("../middleware/auth")
+const router = express.Router()
 
 router.post("/register", async (req, res) => {
   const { username, password } = req.body;
@@ -11,7 +12,7 @@ router.post("/register", async (req, res) => {
   if (!username || !password) {
     return res
       .status(400)
-      .json({ message: "Please provide username and password" });
+      .json({ message: "Please provide username and password" })
   }
 
   try {
@@ -22,64 +23,64 @@ router.post("/register", async (req, res) => {
     }
 
     // Create new user
-    const user = new User({ username, password });
-    await user.save();
+    const user = new User({ username, password })
+    await user.save()
 
-    const token = generateToken({ username: user.username });
-    res.status(201).json({ message: "Registration successful!", token });
-    console.log("New user registered:", user.username);
+    const token = generateToken({ username: user.username })
+    res.status(201).json({ message: "Registration successful!", token })
+    console.log("New user registered:", user.username)
   } catch (error) {
-    console.error("Error during registration:", error);
-    res.status(500).json({ message: "Server Error" });
+    console.error("Error during registration:", error)
+    res.status(500).json({ message: "Server Error" })
   }
 });
 
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body
 
   // Check for missing fields
   if (!username || !password) {
     return res
       .status(400)
-      .json({ message: "Please provide username and password" });
+      .json({ message: "Please provide username and password" })
   }
 
   try {
     // Check for existing user
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials" })
     }
 
     // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials" })
     }
 
-    const token = generateToken({ username: user.username });
-    res.status(200).json({ message: "Login successful!", token });
+    const token = generateToken({ username: user.username })
+    res.status(200).json({ message: "Login successful!", token })
   } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).json({ message: "Server Error" });
+    console.error("Error during login:", error)
+    res.status(500).json({ message: "Server Error" })
   }
 });
 
-// Add endpoint to fetch user information
-router.get("/user", async (req, res) => {
+// fetch user information
+router.get("/user", authenticate, async (req, res) => {
   try {
     // Retrieve user information from request
     const user = req.user;
     if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Unauthorized" })
     }
 
     // Respond with user information
-    res.status(200).json({ username: user.username });
+    res.status(200).json({ username: user.username })
   } catch (error) {
-    console.error("Error fetching user information:", error);
-    res.status(500).json({ message: "Server Error" });
+    console.error("Error fetching user information:", error)
+    res.status(500).json({ message: "Server Error" })
   }
-});
+})
 
-module.exports = router;
+module.exports = router

@@ -10,21 +10,11 @@ function Transaction() {
   const [errorMessage, setErrorMessage] = useState("")
   const [username, setUsername] = useState("")
 
+  // Retrieve username from local storage when component mounts
   useEffect(() => {
-    // Fetch user information after component mounts
-    const token = localStorage.getItem("token");
-    if (token) {
-      axios.get(`${backendUrl}/auth/user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(response => {
-        setUsername(response.data.username);
-      })
-      .catch(error => {
-        console.error("Error fetching user information:", error);
-      })
+    const storedUsername = localStorage.getItem("username")
+    if (storedUsername) {
+      setUsername(storedUsername)
     }
   }, [])
 
@@ -35,6 +25,7 @@ function Transaction() {
         {
           amount: amount,
           description: description,
+          username: username, // Pass the username in the request body
         },
         {
           headers: {
