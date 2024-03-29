@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "../Styles/Login.css";
+import React, { useState } from "react"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import "../Styles/Login.css"
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:6001";
+const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:6001"
 
 function Login() {
-  const [username, setUsername] = useState("user");
-  const [password, setPassword] = useState("password");
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const [username, setUsername] = useState("user")
+  const [password, setPassword] = useState("password")
+  const navigate = useNavigate() // Initialize useNavigate hook
 
   const login = async () => {
     try {
@@ -18,14 +18,14 @@ function Login() {
           username,
           password,
         }
-      );
-      localStorage.setItem("token", data.token);
+      )
+      localStorage.setItem("token", data.token)
       // Redirect to Transaction landing page after successful login
-      navigate("/transaction/submit");
+      navigate("/transaction/submit")
     } catch (error) {
-      console.error("An error occurred during login:", error);
+      console.error("An error occurred during login:", error)
     }
-  };
+  }
 
   return (
     <div className="login-container">
@@ -44,7 +44,7 @@ function Login() {
       />
       <button onClick={login}>Login</button>
     </div>
-  );
+  )
 }
 
-export default Login;
+export default Login
