@@ -3,6 +3,7 @@ import "./Styles/global.css"
 import HomePage from "./pages/HomePage"
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
+import TransactionPage from "./pages/TransactionPage"
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/transaction/submit" element={<TransactionPage />} /> {/* Define the route for submitting a transaction */}
         </Routes>
       </div>
     </Router>
