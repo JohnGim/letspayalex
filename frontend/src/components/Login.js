@@ -1,13 +1,13 @@
-import React, { useState } from "react"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
-import "../Styles/Login.css"
-import config from "../config"
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "../Styles/Login.css";
+import config from "../config";
 
 function Login() {
-  const [username, setUsername] = useState("user")
-  const [password, setPassword] = useState("password")
-  const navigate = useNavigate() // Initialize useNavigate hook
+  const [username, setUsername] = useState("user");
+  const [password, setPassword] = useState("password");
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const login = async () => {
     try {
@@ -17,14 +17,14 @@ function Login() {
           username,
           password,
         }
-      )
-      localStorage.setItem("token", data.token)
-      localStorage.setItem("username", username)
-      navigate("/transaction/submit")
+      );
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("username", username);
+      navigate("/transaction/submit");
     } catch (error) {
-      console.error("An error occurred during login:", error)
+      console.error("An error occurred during login:", error);
     }
-  }
+  };
 
   return (
     <div className="login-container">
@@ -43,7 +43,7 @@ function Login() {
       />
       <button onClick={login}>Login</button>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
