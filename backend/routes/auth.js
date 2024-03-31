@@ -1,26 +1,26 @@
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const generateToken = require('../utils/jwt');
-const authenticate = require('../middleware/auth');
-const User = require('../models/User').default;
+import { Router } from "express";
+import { compare } from "bcryptjs";
+import generateToken from "../utils/jwt";
+import authenticate from "../middleware/auth";
+import User from "../models/User";
 
-const router = express.Router();
+const router = Router();
 
-router.post('/register', async (req, res) => {
+router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
   // Check for missing fields
   if (!username || !password) {
     return res
       .status(400)
-      .json({ message: 'Please provide username and password' });
+      .json({ message: "Please provide username and password" });
   }
 
   try {
     // Check for existing user
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: 'Username already exists' });
+      return res.status(400).json({ message: "Username already exists" });
     }
 
     // Create new user
@@ -28,63 +28,63 @@ router.post('/register', async (req, res) => {
     await user.save();
 
     const token = generateToken({ username: user.username });
-    res.status(201).json({ message: 'Registration successful!', token });
-    console.log('New user registered:', user.username);
+    res.status(201).json({ message: "Registration successful!", token });
+    console.log("New user registered:", user.username);
   } catch (error) {
-    console.error('Error during registration:', error);
-    res.status(500).json({ message: 'Server Error' });
+    console.error("Error during registration:", error);
+    res.status(500).json({ message: "Server Error" });
   }
   return false;
 });
 
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   // Check for missing fields
   if (!username || !password) {
     return res
       .status(400)
-      .json({ message: 'Please provide username and password' });
+      .json({ message: "Please provide username and password" });
   }
 
   try {
     // Check for existing user
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     const token = generateToken({ username: user.username });
-    res.status(200).json({ message: 'Login successful!', token });
+    res.status(200).json({ message: "Login successful!", token });
   } catch (error) {
-    console.error('Error during login:', error);
-    res.status(500).json({ message: 'Server Error' });
+    console.error("Error during login:", error);
+    res.status(500).json({ message: "Server Error" });
   }
   return false;
 });
 
 // fetch user information
-router.get('/user', authenticate, async (req, res) => {
+router.get("/user", authenticate, async (req, res) => {
   try {
     // Retrieve user information from request
     const { user } = req;
     if (!user) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     // Respond with user information
     res.status(200).json({ username: user.username });
   } catch (error) {
-    console.error('Error fetching user information:', error);
-    res.status(500).json({ message: 'Server Error' });
+    console.error("Error fetching user information:", error);
+    res.status(500).json({ message: "Server Error" });
   }
   return false;
 });
 
-module.exports = router;
+export default router;

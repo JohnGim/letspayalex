@@ -9,6 +9,8 @@
         "ecmaVersion": "latest"
     },
     "rules": {
-        "no-console": "off"
+        "no-console": "off",
+        "semi": [2, "always"],
+        "quotes": [2, "double", { "avoidEscape": true }]
     }
 }

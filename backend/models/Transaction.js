@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import { Schema, model } from "mongoose";
 
-const TransactionSchema = new mongoose.Schema({
+const TransactionSchema = new Schema({
   amount: { type: Number, required: true, unique: true },
   description: { type: String, required: false },
 });
 
-module.exports = mongoose.model('Transaction', TransactionSchema);
+export default model("Transaction", TransactionSchema);
