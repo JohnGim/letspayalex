@@ -4,6 +4,7 @@ import cors from "cors";
 import { config } from "dotenv";
 import authRoutes from "./routes/auth";
 import transactionRoutes from "./routes/transaction";
+import config from "./config";
 
 const app = express();
 const port = process.env.REACT_APP_BACKEND_PORT || 6001;
@@ -22,7 +23,7 @@ connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.use(
   cors({
-    allowedOrigins: [frontendUrl],
+    allowedOrigins: [config.frontend.url],
   }),
 );
 app.use(json());
