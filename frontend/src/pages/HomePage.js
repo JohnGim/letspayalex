@@ -6,7 +6,7 @@ const HomePage = () => {
   return (
     <div className="hero">
       <div className="hero-content">
-        <h1>Let's Pay Alex</h1>
+        <h1>Let`&apos;`s Pay Alex</h1>
         <p>Sharing is caring and so is paying Alex. Long live Alex</p>
         <Link to="/register">Register</Link>
         <br />

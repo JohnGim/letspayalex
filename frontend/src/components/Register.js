@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import axios from "axios"
 import "../Styles/Login.css"
 import { useNavigate } from "react-router-dom"
+import config from "../config"
 
 function Register() {
   const [username, setUsername] = useState("user") // Set default username
@@ -12,7 +13,7 @@ function Register() {
   const register = async () => {
     try {
       const { data } = await axios.post(
-        `http://localhost:6001/auth/register`,
+        `${config.backend.url}/auth/register`,
         {
           username,
           password,
