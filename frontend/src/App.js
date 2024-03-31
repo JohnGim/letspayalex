@@ -1,9 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import "./Styles/global.css"
-import HomePage from "./pages/HomePage"
-import LoginPage from "./pages/LoginPage"
-import RegisterPage from "./pages/RegisterPage"
-import TransactionPage from "./pages/TransactionPage"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./Styles/global.css";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import TransactionPage from "./pages/TransactionPage";
+import React from "react";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

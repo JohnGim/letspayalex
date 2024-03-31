@@ -1,8 +1,8 @@
-import Transaction from "../components/Transaction"
-import React from "react"
+import Transaction from "../components/Transaction";
+import React from "react";
 
 function TransactionPage() {
-  return <Transaction />
+  return <Transaction />;
 }
 
-export default TransactionPage
+export default TransactionPage;
