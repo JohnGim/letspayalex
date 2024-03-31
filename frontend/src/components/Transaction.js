@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import "../Styles/Transaction.css"
-const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:6001"
+import config from "../config"
 
 function Transaction() {
   const [amount, setAmount] = useState(1.00)
@@ -21,7 +21,7 @@ function Transaction() {
   const transaction = async (token) => {
     try {
       await axios.post(
-        `${backendUrl}/transaction/submit`,
+        `${config.backend.url}/transaction/submit`,
         {
           amount: amount,
           description: description,
