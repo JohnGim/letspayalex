@@ -5,17 +5,13 @@ import config from "../config";
 
 function Transaction() {
   const [amount, setAmount] = useState(1.00);
-  const [description, setDescription] = useState("coffee"); 
+  const [description, setDescription] = useState("coffee");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [username, setUsername] = useState("");
 
-  // Retrieve username from local storage when component mounts
   useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
+    setUsername(localStorage.getItem("username"));
   }, []);
 
   const transaction = async (token) => {
@@ -25,11 +21,11 @@ function Transaction() {
         {
           amount: amount,
           description: description,
-          username: username, // Pass the username in the request body
+          username: username,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Attach token to request headers
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -41,19 +37,36 @@ function Transaction() {
   };
 
   const handleTransactionFormSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
-    if (token) {
-      await transaction(token); // Call transaction function with token
-    } else {
-      setErrorMessage("Token not found. Please log in again."); // Handle case where token is not found
+    event.preventDefault();
+
+    // Retrieve token from session cookie
+    const token = getTokenFromCookie();
+
+    if (!token) {
+      setErrorMessage("Token not found. Please log in again.");
+      return;
     }
+
+    // Make transaction call with token
+    await transaction(token);
+  };
+
+  // Function to retrieve token from session cookie
+  const getTokenFromCookie = () => {
+    const cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+      const [name, value] = cookie.split("=");
+      if (name === "token") {
+        return value;
+      }
+    }
+    return null;
   };
 
   return (
     <div className="transaction-container">
       <h2>Enter transaction</h2>
-      <p>Welcome, {username}!</p> {/* Display username */}
+      <p>Welcome, {username}!</p>
       <form onSubmit={handleTransactionFormSubmit}>
         <input
           type="number"

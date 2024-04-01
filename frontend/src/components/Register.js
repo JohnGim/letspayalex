@@ -12,14 +12,13 @@ function Register() {
 
   const register = async () => {
     try {
-      const { data } = await axios.post(
+      await axios.post(
         `${config.backend.url}/auth/register`,
         {
           username,
           password,
         },
       );
-      localStorage.setItem("token", data.token);
       setSuccessMessage("Registration Successful!");
       navigate("/login");
     } catch (error) {

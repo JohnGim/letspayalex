@@ -18,8 +18,10 @@ function Login() {
           password,
         }
       );
-      localStorage.setItem("token", data.token);
+      // Store the token in a session cookie
+      document.cookie = `token=${data.token}; Secure; SameSite=Strict`;
       localStorage.setItem("username", username);
+      // Navigate to transaction page
       navigate("/transaction/submit");
     } catch (error) {
       console.error("An error occurred during login:", error);

@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 const Transaction = require("../models/Transaction");
-const authenticate = require("../middleware/auth");
+const authenticate = require("../middleware/authenticate");
 
 // This route handles submitting a transaction
 router.post("/submit", authenticate, async (req, res) => {
