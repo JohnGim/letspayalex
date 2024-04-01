@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/jwt");
-const authenticate = require("../middleware/auth");
+const authenticate = require("../middleware/authenticate");
 const User = require("../models/User");
 
 const router = express.Router();
@@ -27,8 +27,7 @@ router.post("/register", async (req, res) => {
     const user = new User({ username, password });
     await user.save();
 
-    const token = generateToken({ username: user.username });
-    res.status(201).json({ message: "Registration successful!", token });
+    res.status(201).json({ message: "Registration successful!" });
     console.log("New user registered:", user.username);
   } catch (error) {
     console.error("Error during registration:", error);
@@ -36,6 +35,8 @@ router.post("/register", async (req, res) => {
   }
   return false;
 });
+
+// In your auth.js file
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -60,7 +61,16 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    // Generate JWT token
     const token = generateToken({ username: user.username });
+
+    // Save token in session cookie
+    res.cookie("token", token, {
+      secure: process.env.NODE_ENV === "production", // Enable in production
+      sameSite: "strict",
+    });
+
+    // Return the token in the response
     res.status(200).json({ message: "Login successful!", token });
   } catch (error) {
     console.error("Error during login:", error);
