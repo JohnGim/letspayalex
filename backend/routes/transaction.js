@@ -4,6 +4,20 @@ const router = express.Router();
 const Transaction = require("../models/Transaction");
 const authenticate = require("../middleware/authenticate");
 
+// GET route to fetch transactions for a user
+router.get("/list", authenticate, async (req, res) => {
+  try {
+    // Fetch transactions associated with the authenticated user
+    const transactions = await Transaction.find({ user: req.user.id });
+
+    // Respond with the list of transactions
+    res.status(200).json(transactions);
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // This route handles submitting a transaction
 router.post("/submit", authenticate, async (req, res) => {
   const { amount, description } = req.body;

@@ -1,20 +1,24 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./Styles/global.css";
+import Header from "./components/Header"; // Import your Header component
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import TransactionPage from "./pages/TransactionPage";
-import React from "react";
+import TransactionSubmitPage from "./pages/TransactionSubmitPage";
+import TransactionListPage from "./pages/TransactionListPage";
 
 function App() {
   return (
     <Router>
       <div className="container">
+        <Header /> {/* Include the Header component */}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/transaction/submit" element={<TransactionPage />} /> {/* Define the route for submitting a transaction */}
+          <Route path="/transaction/submit" element={<TransactionSubmitPage />} />
+          <Route path="/transaction/list" element={<TransactionListPage />} />
         </Routes>
       </div>
     </Router>

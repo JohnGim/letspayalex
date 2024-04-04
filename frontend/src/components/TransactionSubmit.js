@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../Styles/Transaction.css";
+import "../Styles/TransactionSubmit.css";
 import config from "../config";
 
-function Transaction() {
+function TransactionSubmit() {
   const [amount, setAmount] = useState(1.00);
   const [description, setDescription] = useState("coffee");
   const [successMessage, setSuccessMessage] = useState("");
@@ -88,4 +88,4 @@ function Transaction() {
   );
 }
 
-export default Transaction;
+export default TransactionSubmit;
