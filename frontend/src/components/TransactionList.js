@@ -9,9 +9,17 @@ function TransactionList() {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    setUsername(localStorage.getItem("username"));
+    setUsername(sessionStorage.getItem("username"));
     fetchTransactions();
   }, []);
+
+  useEffect(() => {
+    const storedUsername = sessionStorage.getItem("username");
+    if (username !== storedUsername) {
+      setUsername(storedUsername);
+      fetchTransactions();
+    }
+  }, [username]);
 
   const fetchTransactions = async () => {
     try {
@@ -20,11 +28,17 @@ function TransactionList() {
         setErrorMessage("Token not found. Please log in again.");
         return;
       }
-      const response = await axios.get(`${config.backend.url}/transaction/list`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${config.backend.url}/transaction/list`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            username: sessionStorage.getItem("username"),
+          },
+        }
+      );
       setTransactions(response.data);
     } catch (error) {
       setErrorMessage("An error occurred while fetching transactions.");
@@ -46,17 +60,25 @@ function TransactionList() {
 
   return (
     <div className="transaction-container">
-      <h2>Transactions List</h2>
-      <p>Welcome, {username}!</p>
+      <h2>{"Transactions List"}</h2>
+      <p>{`Alex needs some love! ${username}.`}</p>
       {errorMessage && <p className="error">{errorMessage}</p>}
-      <ul>
-        {transactions.map((transaction, index) => (
-          <li key={index}>
-            <p>Amount: {transaction.amount}</p>
-            <p>Description: {transaction.description}</p>
-          </li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Amount</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((transaction, index) => (
+            <tr key={index}>
+              <td>{transaction.amount}</td>
+              <td>{transaction.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

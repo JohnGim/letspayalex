@@ -20,7 +20,7 @@ function Login() {
       );
       // Store the token in a session cookie
       document.cookie = `token=${data.token}; Secure; SameSite=Strict`;
-      localStorage.setItem("username", username);
+      sessionStorage.setItem("username", username);
       // Navigate to transaction page
       navigate("/transaction/submit");
     } catch (error) {

@@ -13,16 +13,22 @@
   margin-bottom: 10px;
 }
 
-.transaction-container form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.transaction-container table {
+  border-collapse: collapse;
+  width: 100%;
 }
 
-.transaction-container input {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px;
+.transaction-container th, .transaction-container td {
+  padding: 8px;
+  text-align: left;
+}
+
+.transaction-container th {
+  background-color: #f2f2f2;
+}
+
+.transaction-container td {
+  border: none;
 }
 
 .transaction-container button {
