@@ -11,7 +11,7 @@ function TransactionSubmit() {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    setUsername(localStorage.getItem("username"));
+    setUsername(sessionStorage.getItem("username"));
   }, []);
 
   const transaction = async (token) => {
@@ -66,7 +66,7 @@ function TransactionSubmit() {
   return (
     <div className="transaction-container">
       <h2>Enter transaction</h2>
-      <p>Welcome, {username}!</p>
+      <p>{`Alex let you borrow money? Or you're just really nice ${username}`}!</p>
       <form onSubmit={handleTransactionFormSubmit}>
         <input
           type="number"

@@ -7,8 +7,10 @@ const authenticate = require("../middleware/authenticate");
 // GET route to fetch transactions for a user
 router.get("/list", authenticate, async (req, res) => {
   try {
-    // Fetch transactions associated with the authenticated user
-    const transactions = await Transaction.find({ user: req.user.id });
+    // Fetch transactions associated with the provided username
+    const { username } = req.query; // Retrieve username from query parameters
+    console.log(`username: ${username}`);
+    const transactions = await Transaction.find({ username });
 
     // Respond with the list of transactions
     res.status(200).json(transactions);
@@ -20,10 +22,10 @@ router.get("/list", authenticate, async (req, res) => {
 
 // This route handles submitting a transaction
 router.post("/submit", authenticate, async (req, res) => {
-  const { amount, description } = req.body;
+  const { amount, description, username } = req.body;
 
   // Check for missing fields
-  if (!amount || !description) {
+  if (!amount || !description || !username) {
     return res.status(400).json({ message: "Please provide amount and description" });
   }
 
@@ -32,6 +34,7 @@ router.post("/submit", authenticate, async (req, res) => {
     const transaction = await Transaction.create({
       amount,
       description,
+      username,
       // You might also want to associate the transaction with a user here
     });
 
