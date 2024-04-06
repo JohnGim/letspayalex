@@ -5,6 +5,7 @@ import config from "../config";
 
 function TransactionSubmit() {
   const [amount, setAmount] = useState(1.00);
+  const [currency, setCurrency] = useState("EUR");
   const [description, setDescription] = useState("coffee");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,6 +23,7 @@ function TransactionSubmit() {
           amount: amount,
           description: description,
           username: username,
+          currency: currency
         },
         {
           headers: {
@@ -68,19 +70,31 @@ function TransactionSubmit() {
       <h2>Enter transaction</h2>
       <p>{`Alex let you borrow money? Or you're just really nice ${username}`}!</p>
       <form onSubmit={handleTransactionFormSubmit}>
-        <input
-          type="number"
-          placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <button type="submit">Transaction</button>
+        <div className="input-amount-group">
+          <input
+            type="number"
+            placeholder="Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <select
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value)}
+          >
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+            <option value="USD">CHF</option>
+            <option value="USD">WON</option>
+            {/* Add more options as needed */}
+          </select>
+          <input
+            type="text"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <button type="submit">Submit Transaction</button>
       </form>
       {successMessage && <p className="success">{successMessage}</p>}
       {errorMessage && <p className="error">{errorMessage}</p>}
