@@ -19,23 +19,36 @@
   align-items: center;
 }
 
-.transaction-container input {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px;
+.input-amount-group {
+  display: flex;
 }
 
-.transaction-container button {
+.input-amount-group input,
+.input-amount-group select {
+  width: 50%; /* Adjust as needed */
+  padding: 10px;
+  margin-right: 10px; /* Adjust spacing between input and select */
+  margin-bottom: 10px;
+  border-radius: 20px; /* Rounded corners */
+}
+
+.transaction-container input[type="text"],
+.transaction-container input[type="number"],
+.transaction-container select {
+  margin-bottom: 10px;
+}
+
+.transaction-container button[type="submit"] {
   padding: 10px 20px;
   background-color: #333;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px; /* Rounded corners */
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.transaction-container button:hover {
+.transaction-container button[type="submit"]:hover {
   background-color: #555;
 }
 

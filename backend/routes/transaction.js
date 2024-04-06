@@ -22,10 +22,12 @@ router.get("/list", authenticate, async (req, res) => {
 
 // This route handles submitting a transaction
 router.post("/submit", authenticate, async (req, res) => {
-  const { amount, description, username } = req.body;
+  const {
+    amount, description, username, currency,
+  } = req.body;
 
   // Check for missing fields
-  if (!amount || !description || !username) {
+  if (!amount || !description || !username || !currency) {
     return res.status(400).json({ message: "Please provide amount and description" });
   }
 
@@ -35,6 +37,7 @@ router.post("/submit", authenticate, async (req, res) => {
       amount,
       description,
       username,
+      currency,
       // You might also want to associate the transaction with a user here
     });
 
