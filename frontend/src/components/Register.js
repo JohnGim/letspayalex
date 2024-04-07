@@ -1,60 +1,55 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "../Styles/Login.css";
 import { useNavigate } from "react-router-dom";
-import config from "../config";
+import { registerUser } from "../services/userService";
+import PropTypes from "prop-types";
 
-function Register() {
-  const [username, setUsername] = useState("user"); // Set default username
-  const [password, setPassword] = useState("password"); // Set default password
-  const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate hook
+function Register( { onRegister }) {
+  const [username, setUsername] = useState("user");
+  const [password, setPassword] = useState("password");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const register = async () => {
     try {
-      await axios.post(
-        `${config.backend.url}/auth/register`,
-        {
-          username,
-          password,
-        },
-      );
-      setSuccessMessage("Registration Successful!");
-      navigate("/login");
+      const { data } = await registerUser(username, password);
+      console.log("User registered successfully!");
+      sessionStorage.setItem("username", username);
+      onRegister(username);
+      console.log(data.token);
+      document.cookie = `token=${data.token}; Secure; SameSite=Strict`;
+      navigate("/transaction/submit");
     } catch (error) {
       console.error("An error occurred during registration:", error);
-      // Display an error message to the user
-      // You can use state to manage error message display in your component
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrorMessage(error.response.data.message); // Set the error message from the response
+      } else {
+        setErrorMessage("An error occurred during registration."); // Set a generic error message
+      }
     }
-  };
-
-
-  const handleFormSubmit = event => {
-    event.preventDefault(); // Prevent default form submission behavior
-    register(); // Call the register function when form is submitted
   };
 
   return (
     <div className="login-container">
       <h2>Register</h2>
-      <form onSubmit={handleFormSubmit}> {/* Use onSubmit event to handle form submission */}
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <button type="submit">Register</button> {/* Change button type to submit */}
-      </form>
-      {successMessage && <p>{successMessage}</p>} {/* Display success message if it's not empty */}
+      {errorMessage && <p className="error">{errorMessage}</p>}
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+      />
+      <button onClick={register}>Register</button>
     </div>
   );
 }
-
+Register.propTypes = {
+  onRegister: PropTypes.func.isRequired,
+};
 export default Register;
