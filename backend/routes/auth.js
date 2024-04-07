@@ -20,14 +20,21 @@ router.post("/register", async (req, res) => {
     // Check for existing user
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: "Username already exists" });
+      return res.status(400).json({ message: "Username already exists. Please choose a new user name!" });
     }
 
     // Create new user
     const user = new User({ username, password });
     await user.save();
 
-    res.status(201).json({ message: "Registration successful!" });
+    // Generate JWT token
+    const token = generateToken({ username: user.username });
+    // Save token in session cookie
+    res.cookie("token", token, {
+      secure: process.env.NODE_ENV === "production", // Enable in production
+      sameSite: "strict",
+    });
+    res.status(201).json({ message: "Registration successful!", token });
     console.log("New user registered:", user.username);
   } catch (error) {
     console.error("Error during registration:", error);

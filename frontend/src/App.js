@@ -9,19 +9,25 @@ import TransactionSubmitPage from "./pages/TransactionSubmitPage";
 import TransactionListPage from "./pages/TransactionListPage";
 
 function App() {
-  // Define the global currency state
-  const [globalCurrency, setGlobalCurrency] = useState("EUR");
+  const [username, setUsername] = useState(sessionStorage.getItem("username"));
+
+  const handleLogout = () => {
+    setUsername(null);
+    sessionStorage.removeItem("username");
+    document.cookie = "token=; expires=Thu, 01 Jan1970 00:00:00 UTC; path=/;";
+    console.log("User logged out successfully!");
+  };
 
   return (
     <Router>
       <div className="container">
-        <Header />
+        <Header username={ username } onLogout={handleLogout} /> {}
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/transaction/submit" element={<TransactionSubmitPage globalCurrency={globalCurrency} setGlobalCurrency={setGlobalCurrency} />} />
-          <Route path="/transaction/list" element={<TransactionListPage globalCurrency={globalCurrency} />} />
+          <Route path="/login" element={<LoginPage onLogin={setUsername}/>} />
+          <Route path="/register" element={<RegisterPage onRegister={setUsername}/>} />
+          <Route path="/transaction/submit" element={<TransactionSubmitPage />} />
+          <Route path="/transaction/list" element={<TransactionListPage />} />
         </Routes>
       </div>
     </Router>

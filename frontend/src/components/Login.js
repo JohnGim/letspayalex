@@ -1,36 +1,37 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../Styles/Login.css";
-import config from "../config";
+import { loginUser } from "../services/userService";
+import PropTypes from "prop-types";
 
-function Login() {
+
+function Login({ onLogin }) {
   const [username, setUsername] = useState("user");
   const [password, setPassword] = useState("password");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   const login = async () => {
     try {
-      const { data } = await axios.post(
-        `${config.backend.url}/auth/login`,
-        {
-          username,
-          password,
-        }
-      );
-      // Store the token in a session cookie
+      const data = await loginUser(username, password);
+      console.log("User logged in successfully!");
       document.cookie = `token=${data.token}; Secure; SameSite=Strict`;
       sessionStorage.setItem("username", username);
-      // Navigate to transaction page
+      onLogin(username);
       navigate("/transaction/submit");
     } catch (error) {
-      console.error("An error occurred during login:", error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrorMessage(error.response.data.message); // Set the error message from the response
+      } else {
+        setErrorMessage("An error occurred during registration."); // Set a generic error message
+      }
     }
   };
-
   return (
     <div className="login-container">
       <h2>Login</h2>
+      {errorMessage && <p className="error">{errorMessage}</p>}
       <input
         type="text"
         placeholder="Username"
@@ -48,4 +49,7 @@ function Login() {
   );
 }
 
+Login.propTypes = {
+  onLogin: PropTypes.func.isRequired,
+};
 export default Login;

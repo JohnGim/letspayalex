@@ -15,7 +15,10 @@ console.log("Url for frontend: ", config.frontend.url);
 console.log("Url for backend: ", config.backend.url);
 
 mongoose
-  .connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(config.mongodb.url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
