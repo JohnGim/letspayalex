@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../Styles/TransactionSubmit.css";
 import config from "../config";
+import currencySymbolMap from "./CurrencySymbolMap";
+
 
 function TransactionSubmit() {
   const [amount, setAmount] = useState(1.00);
@@ -68,7 +70,7 @@ function TransactionSubmit() {
   return (
     <div className="transaction-container">
       <h2>Enter transaction</h2>
-      <p>{`Alex let you borrow money? Or you're just really nice ${username}`}!</p>
+      <p>{`Alex let you borrow money? Or you're just really nice, ${username}`}!</p>
       <form onSubmit={handleTransactionFormSubmit}>
         <div className="input-amount-group">
           <input
@@ -78,15 +80,17 @@ function TransactionSubmit() {
             onChange={(e) => setAmount(e.target.value)}
           />
           <select
-            value={currency}
-            onChange={(e) => setCurrency(e.target.value)}
-          >
-            <option value="EUR">EUR</option>
-            <option value="USD">USD</option>
-            <option value="USD">CHF</option>
-            <option value="USD">WON</option>
-            {/* Add more options as needed */}
-          </select>
+          value={currency}
+          onChange={(e) => {
+            setCurrency(e.target.value); // Update currency state
+          }}
+        >
+          {Object.keys(currencySymbolMap).map((currencyCode) => (
+            <option key={currencyCode} value={currencyCode}>
+              {currencyCode}
+            </option>
+          ))}
+        </select>
           <input
             type="text"
             placeholder="Description"

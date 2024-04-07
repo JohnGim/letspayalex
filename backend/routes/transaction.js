@@ -1,18 +1,35 @@
 const express = require("express");
+const axios = require("axios");
 
 const router = express.Router();
+const Dinero = require("dinero.js");
+const util = require("util");
 const Transaction = require("../models/Transaction");
+const Currency = require("../models/Currency");
 const authenticate = require("../middleware/authenticate");
+const config = require("../config");
 
-// GET route to fetch transactions for a user
+const fetchCurrencies = async () => {
+  try {
+    const currencies = await Currency.find({});
+
+    const rates = {};
+    currencies.forEach((currency) => {
+      rates[currency.currency.toUpperCase()] = currency.amount;
+    });
+
+    return rates;
+  } catch (error) {
+    console.error("Error fetching exchange rates:", error);
+    return null;
+  }
+};
+
 router.get("/list", authenticate, async (req, res) => {
   try {
-    // Fetch transactions associated with the provided username
-    const { username } = req.query; // Retrieve username from query parameters
-    console.log(`username: ${username}`);
+    const { username } = req.query;
     const transactions = await Transaction.find({ username });
 
-    // Respond with the list of transactions
     res.status(200).json(transactions);
   } catch (error) {
     console.error("Error fetching transactions:", error);
@@ -20,34 +37,101 @@ router.get("/list", authenticate, async (req, res) => {
   }
 });
 
-// This route handles submitting a transaction
+const convertAmount = (amount, currency, targetCurrency, rates) => {
+  if (currency === targetCurrency) {
+    return amount;
+  }
+  if (currency === "EUR") {
+    return amount * rates[targetCurrency];
+  } else {
+    if (targetCurrency !== "EUR") {
+      return (amount / rates[currency]) * rates[targetCurrency];
+    }
+    return amount / rates[currency];
+  }
+};
+
+router.get("/convert", authenticate, async (req, res) => {
+  try {
+    const { username, currency: targetCurrency } = req.query;
+    const transactions = await Transaction.find({ username });
+
+    const exchangeRates = await fetchCurrencies();
+
+    if (!exchangeRates) {
+      return res.status(500).json({ message: "Error fetching exchange rates" });
+    }
+
+    const convertedTransactions = transactions.map((transaction) => {
+      const convertedAmount = convertAmount(
+        transaction.amount,
+        transaction.currency,
+        targetCurrency,
+        exchangeRates,
+      );
+      return {
+        ...transaction.toObject(),
+        amount: convertedAmount,
+        currency: targetCurrency,
+      };
+    });
+
+    res.status(200).json(convertedTransactions);
+  } catch (error) {
+    console.error("Error converting currency:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+  return false;
+});
+
 router.post("/submit", authenticate, async (req, res) => {
   const {
     amount, description, username, currency,
   } = req.body;
 
-  // Check for missing fields
   if (!amount || !description || !username || !currency) {
     return res.status(400).json({ message: "Please provide amount and description" });
   }
 
   try {
-    // Save the transaction to the database (You need to define your model)
     const transaction = await Transaction.create({
       amount,
       description,
       username,
       currency,
-      // You might also want to associate the transaction with a user here
     });
 
-    // Respond with success message
     res.status(200).json({ message: "Transaction submitted successfully", transaction });
   } catch (error) {
     console.error("Error submitting transaction:", error);
     res.status(500).json({ message: "Internal server error" });
   }
   return false;
+});
+
+router.get("/update-currencies", async (req, res) => {
+  try {
+    const response = await axios.get(config.ecb.url);
+
+    const rates = response.data.eur;
+    const currencies = Object.keys(rates);
+
+    // Clear existing currencies
+    await Currency.deleteMany({});
+
+    // Insert new currencies
+    const currencyDocs = currencies.map((currency) => ({
+      currency,
+      amount: rates[currency],
+    }));
+
+    await Currency.insertMany(currencyDocs);
+
+    res.status(200).json({ success: true, message: "Currency data updated successfully." });
+  } catch (error) {
+    console.error("Error updating currency data:", error);
+    res.status(500).json({ success: false, message: "Failed to update currency data." });
+  }
 });
 
 module.exports = router;
