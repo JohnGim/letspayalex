@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import axios from "axios";
 import "../Styles/TransactionList.css";
 import config from "../config";
 import currencySymbolMap from "./CurrencySymbolMap";
 
-function TransactionList({ globalCurrency }) {
+function TransactionList() {
   const [errorMessage, setErrorMessage] = useState("");
   const [username, setUsername] = useState("");
   const [currency, setCurrency] = useState("EUR");
   const [transactions, setTransactions] = useState([]);
-  const [selectedGlobalCurrency, setSelectedGlobalCurrency] = useState(globalCurrency || "EUR"); // Set default value to "EUR"
+  const [selectedGlobalCurrency, setSelectedGlobalCurrency] = useState("EUR"); // Set default value to "EUR"
   const [totalSum, setTotalSum] = useState(0); // State variable to hold the total sum
 
   useEffect(() => {
@@ -162,9 +161,5 @@ function TransactionList({ globalCurrency }) {
     </div>
   );
 }
-
-TransactionList.propTypes = {
-  globalCurrency: PropTypes.string.isRequired,
-};
 
 export default TransactionList;
