@@ -7,14 +7,14 @@ import currencySymbolMap from "./CurrencySymbolMap";
 function TransactionList() {
   const [errorMessage, setErrorMessage] = useState("");
   const [username, setUsername] = useState("");
-  const [currency, setCurrency] = useState("EUR");
   const [transactions, setTransactions] = useState([]);
-  const [selectedGlobalCurrency, setSelectedGlobalCurrency] = useState("EUR"); // Set default value to "EUR"
-  const [totalSum, setTotalSum] = useState(0); // State variable to hold the total sum
+  const [selectedGlobalCurrency, setSelectedGlobalCurrency] = useState("EUR");
+  const [totalSum, setTotalSum] = useState(0);
+  const [currenciesUpdated, setCurrenciesUpdated] = useState(false);
 
   useEffect(() => {
     setUsername(sessionStorage.getItem("username"));
-    fetchTransactions(); // Call fetchTransactions when component mounts
+    fetchTransactions();
   }, []);
 
   const fetchTransactions = async () => {
@@ -51,8 +51,8 @@ function TransactionList() {
         setErrorMessage("Token not found. Please log in again.");
         return;
       }
-
-      const response = await axios.get(
+  
+      await axios.get(
         `${config.backend.url}/transaction/update-currencies`,
         {
           headers: {
@@ -60,44 +60,10 @@ function TransactionList() {
           }
         }
       );
-      setTransactions(response.data);
+      setCurrenciesUpdated(true);
     } catch (error) {
       setErrorMessage("An error occurred while updating currencies.");
       console.error("Error updating currencies:", error);
-    }
-    return false;
-  };
-
-  const convertTransactions = async () => {
-    try {
-      const token = getTokenFromCookie();
-      if (!token) {
-        setErrorMessage("Token not found. Please log in again.");
-        return;
-      }
-
-      console.log(`selectedGlobalCurrency: ${selectedGlobalCurrency}`);
-      const response = await axios.get(
-        `${config.backend.url}/transaction/convert`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            username: sessionStorage.getItem("username"),
-            currency: selectedGlobalCurrency,
-          },
-        }
-      );
-
-      const convertedTransactions = response.data;
-      setTransactions(convertedTransactions);
-
-      const newTotalSum = convertedTransactions.reduce((sum, transaction) => sum + transaction.amount, 0);
-      setTotalSum(newTotalSum);
-    } catch (error) {
-      setErrorMessage("An error occurred while converting transactions.");
-      console.error("Error converting transactions:", error);
     }
   };
 
@@ -112,32 +78,72 @@ function TransactionList() {
     return null;
   };
 
+  const handleCurrencyChange = (event) => {
+    setSelectedGlobalCurrency(event.target.value);
+    convertTransactions(event.target.value);
+  };
+
+  const convertTransactions = async (currencyCode) => {
+    try {
+      const token = getTokenFromCookie();
+      if (!token) {
+        setErrorMessage("Token not found. Please log in again.");
+        return;
+      }
+
+      const response = await axios.get(
+        `${config.backend.url}/transaction/convert`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            username: sessionStorage.getItem("username"),
+            currency: currencyCode,
+          },
+        }
+      );
+
+      const convertedTransactions = response.data;
+      setTransactions(convertedTransactions);
+
+      const newTotalSum = convertedTransactions.reduce(
+        (sum, transaction) => sum + transaction.amount,
+        0
+      );
+      setTotalSum(newTotalSum);
+    } catch (error) {
+      setErrorMessage("An error occurred while converting transactions.");
+      console.error("Error converting transactions:", error);
+    }
+  };
+
   return (
     <div className="transaction-container">
-      <h2>{"Transactions List"}</h2>
+      <h2>Transactions List</h2>
       <p>{`Alex needs some love! ${username}.`}</p>
       {errorMessage && <p className="error">{errorMessage}</p>}
-      <div className="button-group">
-        <span>So you want to pay him in...</span>
-        <select
-          value={currency}
-          onChange={(e) => {
-            setCurrency(e.target.value); // Update currency state
-            setSelectedGlobalCurrency(e.target.value); // Update selectedGlobalCurrency state
-          }}
-        >
-          {Object.keys(currencySymbolMap).map((currencyCode) => (
-            <option key={currencyCode} value={currencyCode}>
-              {currencyCode}
-            </option>
-          ))}
-        </select>
-        <button onClick={convertTransactions}>Convert!</button>
-        <button onClick={updateCurrencies}>Update currencies</button>
+      <div className="row-container">
+        <div className="currency-select">
+          <select value={selectedGlobalCurrency} onChange={handleCurrencyChange}>
+            {Object.keys(currencySymbolMap).map((currencyCode) => (
+              <option key={currencyCode} value={currencyCode}>
+                {currencyCode}
+              </option>
+            ))}
+          </select>
+          <button onClick={updateCurrencies} className={currenciesUpdated ? "updated" : ""}>
+            {currenciesUpdated ? "Currencies updated!" : "Update currencies"}
+          </button>
+        </div>
+        {totalSum !== 0 && (
+          <div className="total-sum-container">
+            <span>{currencySymbolMap[selectedGlobalCurrency]} {totalSum} </span>
+          </div>
+        )}
       </div>
       {transactions.length > 0 && (
         <div>
-          <p>Total Sum: {totalSum + " " + selectedGlobalCurrency}</p>
           <table>
             <thead>
               <tr>
@@ -150,7 +156,7 @@ function TransactionList() {
               {transactions.map((transaction, index) => (
                 <tr key={index}>
                   <td>{transaction.amount}</td>
-                  <td>{transaction.currency}</td>
+                  <td>{currencySymbolMap[transaction.currency]}</td>
                   <td>{transaction.description}</td>
                 </tr>
               ))}

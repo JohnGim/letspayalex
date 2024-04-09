@@ -16,11 +16,12 @@
 .transaction-container table {
   border-collapse: collapse;
   width: 100%;
+  text-align: center;
 }
 
 .transaction-container th, .transaction-container td {
   padding: 8px;
-  text-align: left;
+  text-align: center;
 }
 
 .transaction-container th {
@@ -53,37 +54,55 @@
   color: red;
 }
 
-.button-group {
+.currency-select {
   display: flex;
+  justify-content: center;
+}
+
+.currency-select select {
+  display: flex;
+  margin: 0 auto; /* Center the select button horizontally */
   align-items: center; /* Align items vertically */
-  padding: 5px; /* Adjust padding as needed */
-}
-
-.button-group span {
-  margin-right: 10px; /* Adjust margin as needed */
-}
-
-.button-group select {
-  font-size: 14px; /* Adjust font size as needed */
-  padding: 8px; /* Adjust padding as needed */
   background-color: #333;
   color: #fff;
   border: none;
   border-radius: 20px; /* Rounded corners */
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-align: center;
+  width: 50%; /* Adjust as needed */
+  padding: 10px;
+  margin-right: 10px; /* Adjust spacing between input and select */
+  margin-bottom: 10px;
+  border-radius: 20px; /* Rounded corners */
 }
 
-.button-group button {
-  font-size: 14px; /* Adjust font size as needed */
-  padding: 8px; /* Adjust padding as needed */
+.currency-select button {
+  display: flex;
+  margin: 0 auto; /* Center the select button horizontally */
+  align-items: center; /* Align items vertically */
+  font-size: 14px;
+  justify-content: center;
   background-color: #333;
   color: #fff;
   border: none;
   border-radius: 20px; /* Rounded corners */
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 50%; /* Adjust as needed */
+  padding: 10px;
+  margin-right: 10px; /* Adjust spacing between input and select */
+  margin-bottom: 10px;
+  border-radius: 20px; /* Rounded corners */
 }
 
+.currency-select button.updated {
+  background-color: gray;
+}
 
-
+.total-sum-container {
+  font-size: calc(100vw / 18); /* Adjust the division factor as needed */
+  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+}
