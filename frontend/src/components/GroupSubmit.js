@@ -4,19 +4,21 @@ import "../Styles/GroupSubmit.css";
 import config from "../config";
 
 function GroupSubmit() {
-  const [members, setMembers] = useState([{ name: "Alex" }]);
+  const [members, setMembers] = useState([
+    { name: sessionStorage.getItem("username") || "" },
+    { name: "Alex" }
+  ]);
   const [groupname, setGroupName] = useState("Let's get hyped");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [username, setUsername] = useState("");
   const memberInputRefs = useRef([]);
+  const usernameRef = useRef(""); // Using useRef to store username
 
   useEffect(() => {
-    setUsername(sessionStorage.getItem("username"));
+    usernameRef.current = sessionStorage.getItem("username"); // Storing username
   }, []);
 
   useEffect(() => {
-    // Initialize ref array for member inputs
     memberInputRefs.current = members.map(() => React.createRef());
   }, [members]);
 
@@ -28,9 +30,7 @@ function GroupSubmit() {
     if (event.key === "Enter" || event.key === "Tab") {
       event.preventDefault();
       addMemberRow();
-      // Check if the ref is initialized and the component is mounted
       if (memberInputRefs.current[index + 1] && memberInputRefs.current[index + 1].current) {
-        // Focus on the new member input
         memberInputRefs.current[index + 1].current.focus();
       }
     }
@@ -39,7 +39,6 @@ function GroupSubmit() {
   const handleGroupFormSubmit = async (event) => {
     event.preventDefault();
 
-    // Retrieve token from session cookie
     const token = getTokenFromCookie();
 
     if (!token) {
@@ -48,14 +47,12 @@ function GroupSubmit() {
     }
 
     try {
-      // Extract member names from the members state
       const memberNames = members.map(member => member.name);
       
-      // Send the data to the backend
       await axios.post(
         `${config.backend.url}/group/submit`,
         {
-          username: username,
+          username: usernameRef.current, // Using useRef to access username
           groupname: String(groupname),
           members: memberNames
         },
@@ -73,7 +70,6 @@ function GroupSubmit() {
     }
   };
 
-  // Function to retrieve token from session cookie
   const getTokenFromCookie = () => {
     const cookies = document.cookie.split("; ");
     for (let cookie of cookies) {
@@ -87,8 +83,8 @@ function GroupSubmit() {
 
   return (
     <div className="group-submit-container">
-      <h2>Enter transactions</h2>
-      <p>{`Alex let you borrow money? Or you're just really nice, ${username}`}!</p>
+      <h2>{"Let's make friends"}</h2>
+      <p>{`Alex let you borrow money? Or you're just really nice, ${usernameRef.current}! Press tab to enter another member.`}</p>
       <form onSubmit={handleGroupFormSubmit}>
         <div className="group-inputs">
           <div className="input-group">
