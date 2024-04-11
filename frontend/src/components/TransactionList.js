@@ -83,6 +83,11 @@ function TransactionList() {
     convertTransactions(event.target.value);
   };
 
+  const roundToLowestDenomination = (number, currency) => {
+    const denom = 10 ** currencySymbolMap[currency]["denom"];
+    return Math.round(number / denom) * denom;
+  };
+
   const convertTransactions = async (currencyCode) => {
     try {
       const token = getTokenFromCookie();
@@ -100,6 +105,7 @@ function TransactionList() {
           params: {
             username: sessionStorage.getItem("username"),
             currency: currencyCode,
+            denom: currencySymbolMap[currencyCode]["denom"]
           },
         }
       );
@@ -108,7 +114,7 @@ function TransactionList() {
       setTransactions(convertedTransactions);
 
       const newTotalSum = convertedTransactions.reduce(
-        (sum, transaction) => sum + transaction.amount,
+        (sum, transaction) => parseFloat(sum) + parseFloat(transaction.amount),
         0
       );
       setTotalSum(newTotalSum);
@@ -138,7 +144,7 @@ function TransactionList() {
         </div>
         {totalSum !== 0 && (
           <div className="total-sum-container">
-            <span>{currencySymbolMap[selectedGlobalCurrency]} {totalSum} </span>
+            <span>{currencySymbolMap[selectedGlobalCurrency]["symbol"]} {roundToLowestDenomination(totalSum, selectedGlobalCurrency)} </span>
           </div>
         )}
       </div>
@@ -156,7 +162,7 @@ function TransactionList() {
               {transactions.map((transaction, index) => (
                 <tr key={index}>
                   <td>{transaction.amount}</td>
-                  <td>{currencySymbolMap[transaction.currency]}</td>
+                  <td>{currencySymbolMap[transaction.currency]["symbol"]}</td>
                   <td>{transaction.description}</td>
                 </tr>
               ))}
