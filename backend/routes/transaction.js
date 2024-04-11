@@ -53,7 +53,7 @@ const convertAmount = (amount, currency, targetCurrency, rates) => {
 
 router.get("/convert", authenticate, async (req, res) => {
   try {
-    const { username, currency: targetCurrency } = req.query;
+    const { username, currency: targetCurrency, denom } = req.query;
     const transactions = await Transaction.find({ username });
 
     const exchangeRates = await fetchCurrencies();
@@ -69,9 +69,10 @@ router.get("/convert", authenticate, async (req, res) => {
         targetCurrency,
         exchangeRates,
       );
+      const roundedAmount = (Math.round(convertedAmount / 10 ** denom) * 10 ** denom).toFixed(Math.abs(denom));
       return {
         ...transaction.toObject(),
-        amount: convertedAmount,
+        amount: roundedAmount,
         currency: targetCurrency,
       };
     });
