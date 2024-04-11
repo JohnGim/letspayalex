@@ -33,8 +33,6 @@ function GroupList() {
         }
       );
 
-      console.log(Date.now() - Date.parse(response.data[0].createdAt));
-
       setGroupList(response.data);
     } catch (error) {
       setErrorMessage("An error occurred while fetching transactions.");
@@ -51,6 +49,10 @@ function GroupList() {
       }
     }
     return null;
+  };
+
+  const calculateHoursSince = (date) => {
+    return ((Date.now() - Date.parse(date))/3600000).toFixed(2);
   };
 
   return (
@@ -75,7 +77,7 @@ function GroupList() {
                   <td>{group.groupname}</td>
                   <td>{group.members.join(", ")}</td>
                   <td>{group.createdAt}</td>
-                  <td>{String(((Date.now() - Date.parse(group.createdAt))/3600000).toFixed(2)) + " hours"}</td>
+                  <td>{String(calculateHoursSince(group.createdAt))+ " hours"}</td>
                 </tr>
               ))}
             </tbody>

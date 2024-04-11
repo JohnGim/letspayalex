@@ -9,8 +9,6 @@ router.get("/list", authenticate, async (req, res) => {
     try {
       const { username } = req.query;
       const groupList = await Group.find({ username });
-
-      console.log(groupList)
   
       res.status(200).json(groupList);
     } catch (error) {
