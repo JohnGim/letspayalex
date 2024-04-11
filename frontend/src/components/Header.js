@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "../Styles/Header.css"; // Import CSS file for Header styles
 import PropTypes from "prop-types";
@@ -6,56 +6,52 @@ import PropTypes from "prop-types";
 const Header = ({ username, onLogout }) => {
   const [transactionsMenuOpen, setTransactionsMenuOpen] = useState(false);
   const [groupsMenuOpen, setGroupsMenuOpen] = useState(false);
+  const headerRef = useRef(null);
 
-  const handleTransactionsMouseEnter = () => {
-    setTransactionsMenuOpen(true);
+  useEffect(() => {
+    // Add event listener when component mounts
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      // Remove event listener when component unmounts
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const handleClickOutside = (event) => {
+    if (headerRef.current && !headerRef.current.contains(event.target)) {
+      // If clicked outside the header, close the menus
+      setTransactionsMenuOpen(false);
+      setGroupsMenuOpen(false);
+    }
   };
 
-  const handleTransactionsMouseLeave = () => {
-    setTransactionsMenuOpen(false);
-  };
-
-  const handleGroupsMouseEnter = () => {
-    setGroupsMenuOpen(true);
-  };
-
-  const handleGroupsMouseLeave = () => {
+  const toggleTransactionsMenu = () => {
+    setTransactionsMenuOpen(!transactionsMenuOpen);
+    // Close groups menu when transactions menu is opened
     setGroupsMenuOpen(false);
   };
 
+  const toggleGroupsMenu = () => {
+    setGroupsMenuOpen(!groupsMenuOpen);
+    // Close transactions menu when groups menu is opened
+    setTransactionsMenuOpen(false);
+  };
+
   return (
-    <header>
+    <header ref={headerRef}>
       <nav>
         <ul>
           <li><Link to="/">Home</Link></li>
-          <li
-            onMouseEnter={handleTransactionsMouseEnter}
-            onMouseLeave={handleTransactionsMouseLeave}
-            className="menu-item"
-          >
-            <span className="transactions">Transactions</span>
-            <ul
-              className="submenu"
-              onMouseEnter={handleTransactionsMouseEnter}
-              onMouseLeave={handleTransactionsMouseLeave}
-              style={{ display: transactionsMenuOpen ? "block" : "none" }}
-            >
+          <li className="menu-item">
+            <span className="transactions" onClick={toggleTransactionsMenu}>Transactions</span>
+            <ul className="submenu" style={{ display: transactionsMenuOpen ? "block" : "none" }}>
               <li><Link to="/transaction/list">List Transactions</Link></li>
               <li><Link to="/transaction/submit">Submit Transactions</Link></li>
             </ul>
           </li>
-          <li
-            onMouseEnter={handleGroupsMouseEnter}
-            onMouseLeave={handleGroupsMouseLeave}
-            className="menu-item"
-          >
-            <span className="groups">Groups</span>
-            <ul
-              className="submenu-group"
-              onMouseEnter={handleGroupsMouseEnter}
-              onMouseLeave={handleGroupsMouseLeave}
-              style={{ display: groupsMenuOpen ? "block" : "none" }}
-            >
+          <li className="menu-item">
+            <span className="groups" onClick={toggleGroupsMenu}>Groups</span>
+            <ul className="submenu-group" style={{ display: groupsMenuOpen ? "block" : "none" }}>
               <li><Link to="/group/list">List Groups</Link></li>
               <li><Link to="/group/submit">Submit Group</Link></li>
             </ul>
