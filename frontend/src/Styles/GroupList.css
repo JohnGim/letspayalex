@@ -1,0 +1,108 @@
+.group-list-container {
+  max-width: 600px; /* Adjust as needed */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.group-list-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.group-list-container p {
+  margin-bottom: 10px;
+}
+
+.group-list-container table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+}
+
+.group-list-container th, .group-list-container td {
+  padding: 8px;
+  text-align: center;
+}
+
+.group-list-container th {
+  background-color: #f2f2f2;
+}
+
+.group-list-container td {
+  border: none;
+}
+
+.group-list-container button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.group-list-container button:hover {
+  background-color: #555;
+}
+
+.group-list-container .success {
+  color: green;
+}
+
+.group-list-container .error {
+  color: red;
+}
+
+.currency-select {
+  display: flex;
+  justify-content: center;
+}
+
+.currency-select select {
+  display: flex;
+  margin: 0 auto; /* Center the select button horizontally */
+  align-items: center; /* Align items vertically */
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  width: 50%; /* Adjust as needed */
+  padding: 10px;
+  margin-right: 10px; /* Adjust spacing between input and select */
+  margin-bottom: 10px;
+  border-radius: 20px; /* Rounded corners */
+}
+
+.currency-select button {
+  display: flex;
+  margin: 0 auto; /* Center the select button horizontally */
+  align-items: center; /* Align items vertically */
+  font-size: 14px;
+  justify-content: center;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 50%; /* Adjust as needed */
+  padding: 10px;
+  margin-right: 10px; /* Adjust spacing between input and select */
+  margin-bottom: 10px;
+  border-radius: 20px; /* Rounded corners */
+}
+
+.currency-select button.updated {
+  background-color: gray;
+}
+
+.total-sum-container {
+  font-size: calc(100vw / 18); /* Adjust the division factor as needed */
+  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+}

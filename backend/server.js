@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/auth");
 const transactionRoutes = require("./routes/transaction");
+const groupsRoutes = require("./routes/group")
 const config = require("./config");
 
 const app = express();
@@ -32,5 +33,6 @@ app.use(express.json());
 app.use(cookieParser()); // Place cookieParser before routes
 app.use("/auth", authRoutes);
 app.use("/transaction", transactionRoutes);
+app.use("/group", groupsRoutes)
 
 app.listen(config.backend.port, () => console.log(`Server listening on port ${config.backend.port}`));

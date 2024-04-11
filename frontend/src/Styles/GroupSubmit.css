@@ -1,0 +1,111 @@
+.group-submit-container {
+  max-width: 600px; /* Adjust as needed */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.group-submit-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.group-submit-container p {
+  margin-bottom: 10px;
+}
+
+.group-submit-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px; /* Add margin-bottom for vertical spacing */
+  width: 100%;
+}
+
+.input-group label {
+  margin-right: 10px;
+  flex: 0 0 100px;
+}
+
+.input-group input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+}
+
+.input-group button[type="button"] {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.input-group button[type="button"]:hover {
+  background-color: #555;
+}
+
+.group-submit-container button[type="submit"] {
+  margin-top: 20px; /* Add vertical spacing */
+  padding: 15px 20px; /* Increase padding for better visibility */
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.group-submit-container button[type="submit"]:hover {
+  background-color: #555;
+}
+
+.group-submit-container .success {
+  color: green;
+}
+
+.group-submit-container .error {
+  color: red;
+}
+
+.member-input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.member-input-group label {
+  margin-right: 10px;
+  flex: 0 0 100px;
+}
+
+.member-input-group input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+}
+
+.member-input-group button[type="button"] {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.member-input-group button[type="button"]:hover {
+  background-color: #555;
+}
