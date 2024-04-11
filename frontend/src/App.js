@@ -7,6 +7,8 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import TransactionSubmitPage from "./pages/TransactionSubmitPage";
 import TransactionListPage from "./pages/TransactionListPage";
+import GroupListPage from "./pages/GroupListPage";
+import GroupSubmitPage from "./pages/GroupSubmitPage";
 
 function App() {
   const [username, setUsername] = useState(sessionStorage.getItem("username"));
@@ -28,6 +30,8 @@ function App() {
           <Route path="/register" element={<RegisterPage onRegister={setUsername}/>} />
           <Route path="/transaction/submit" element={<TransactionSubmitPage />} />
           <Route path="/transaction/list" element={<TransactionListPage />} />
+          <Route path="/group/list" element={<GroupListPage />} />
+          <Route path="/group/submit" element={<GroupSubmitPage />} />
         </Routes>
       </div>
     </Router>
