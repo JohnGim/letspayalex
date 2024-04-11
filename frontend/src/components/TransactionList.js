@@ -85,7 +85,7 @@ function TransactionList() {
 
   const roundToLowestDenomination = (number, currency) => {
     const denom = 10 ** currencySymbolMap[currency]["denom"];
-    return Math.round(number / denom) * denom;
+    return (Math.round(number / denom) * denom).toFixed(Math.abs(currencySymbolMap[currency]["denom"]));
   };
 
   const convertTransactions = async (currencyCode) => {
