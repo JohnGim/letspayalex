@@ -1,7 +1,9 @@
 const config = {
-    backend: {}
+  backend: {
+    url: "",
+  }
 };
 
 config.backend.url = process.env.REACT_APP_BACKEND_URL || "http://localhost:6001";
 
-module.exports = config;
+export default config;

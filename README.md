@@ -13,6 +13,8 @@ Install mongodb locally via
 - `brew install mongodb-community@7.0`.
 - Set up a folder for the database, e.g. `mkdir -p data/db`.
 
+Install typescript globally via `npm install -g typescript`. You may need to run `npm link typescript` and add `--legacy-peer-deps` to the `npm install` command if you get an error.
+
 ## Run the Application
 
 Run the database with `mongod --dbpath data/db`.

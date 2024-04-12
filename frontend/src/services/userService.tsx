@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../config";
 
-export const loginUser = async (username, password) => {
+export const loginUser = async (username: string, password: string) => {
   try {
     const { data } = await axios.post(
       `${config.backend.url}/auth/login`,
@@ -17,7 +17,7 @@ export const loginUser = async (username, password) => {
   }
 };
 
-export const registerUser = async (username, password) => {
+export const registerUser = async (username: string, password: string) => {
   try {
     const { data } = await axios.post(
       `${config.backend.url}/auth/register`,

@@ -1,7 +1,7 @@
 import Login from "../components/Login";
 import React from "react";
 import PropTypes from "prop-types";
-function LoginPage({onLogin}) {
+function LoginPage({onLogin}: {onLogin: Function}) {
   return <Login onLogin={onLogin} />;
 }
 

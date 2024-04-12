@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/userService";
 import PropTypes from "prop-types";
 
-function Register( { onRegister }) {
+function Register({ onRegister }: { onRegister: Function }) {
   const [username, setUsername] = useState("user");
   const [password, setPassword] = useState("password");
   const [errorMessage, setErrorMessage] = useState("");
@@ -21,8 +21,8 @@ function Register( { onRegister }) {
       navigate("/transaction/submit");
     } catch (error) {
       console.error("An error occurred during registration:", error);
-      if (error.response && error.response.data && error.response.data.message) {
-        setErrorMessage(error.response.data.message); // Set the error message from the response
+      if ((error as any).response && (error as any).response.data && (error as any).response.data.message) {
+        setErrorMessage((error as any).response.data.message); // Set the error message from the response
       } else {
         setErrorMessage("An error occurred during registration."); // Set a generic error message
       }

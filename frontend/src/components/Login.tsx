@@ -5,7 +5,7 @@ import { loginUser } from "../services/userService";
 import PropTypes from "prop-types";
 
 
-function Login({ onLogin }) {
+function Login({ onLogin }: { onLogin: Function }) {
   const [username, setUsername] = useState("user");
   const [password, setPassword] = useState("password");
   const [errorMessage, setErrorMessage] = useState("");
@@ -21,8 +21,8 @@ function Login({ onLogin }) {
       onLogin(username);
       navigate("/transaction/submit");
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        setErrorMessage(error.response.data.message); // Set the error message from the response
+      if ((error as any).response && (error as any).response.data && (error as any).response.data.message) {
+        setErrorMessage((error as any).response.data.message); // Set the error message from the response
       } else {
         setErrorMessage("An error occurred during registration."); // Set a generic error message
       }

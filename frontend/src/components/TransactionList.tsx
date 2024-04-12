@@ -13,7 +13,7 @@ function TransactionList() {
   const [currenciesUpdated, setCurrenciesUpdated] = useState(false);
 
   useEffect(() => {
-    setUsername(sessionStorage.getItem("username"));
+    setUsername(sessionStorage.getItem("username") || "");
     fetchTransactions();
   }, []);
 
@@ -51,7 +51,7 @@ function TransactionList() {
         setErrorMessage("Token not found. Please log in again.");
         return;
       }
-  
+
       await axios.get(
         `${config.backend.url}/transaction/update-currencies`,
         {
@@ -78,17 +78,17 @@ function TransactionList() {
     return null;
   };
 
-  const handleCurrencyChange = (event) => {
+  const handleCurrencyChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGlobalCurrency(event.target.value);
     convertTransactions(event.target.value);
   };
 
-  const roundToLowestDenomination = (number, currency) => {
+  const roundToLowestDenomination = (number: number, currency: string) => {
     const denom = 10 ** currencySymbolMap[currency]["denom"];
     return (Math.round(number / denom) * denom).toFixed(Math.abs(currencySymbolMap[currency]["denom"]));
   };
 
-  const convertTransactions = async (currencyCode) => {
+  const convertTransactions = async (currencyCode: string) => {
     try {
       const token = getTokenFromCookie();
       if (!token) {
@@ -114,7 +114,7 @@ function TransactionList() {
       setTransactions(convertedTransactions);
 
       const newTotalSum = convertedTransactions.reduce(
-        (sum, transaction) => parseFloat(sum) + parseFloat(transaction.amount),
+        (sum: any, transaction: any) => parseFloat(sum) + parseFloat(transaction.amount),
         0
       );
       setTotalSum(newTotalSum);
@@ -159,7 +159,7 @@ function TransactionList() {
               </tr>
             </thead>
             <tbody>
-              {transactions.map((transaction, index) => (
+              {transactions.map((transaction: any, index: number) => (
                 <tr key={index}>
                   <td>{transaction.amount}</td>
                   <td>{currencySymbolMap[transaction.currency]["symbol"]}</td>

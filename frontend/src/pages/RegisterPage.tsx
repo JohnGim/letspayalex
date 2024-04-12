@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import Register from "../components/Register";
 import React from "react";
 
-function RegisterPage({onRegister}) {
+function RegisterPage({onRegister}: {onRegister: Function}) {
   return <Register onRegister={ onRegister }/>;
 }
 

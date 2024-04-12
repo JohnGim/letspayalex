@@ -14,10 +14,17 @@ function TransactionSubmit() {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    setUsername(sessionStorage.getItem("username"));
+    setUsername(sessionStorage.getItem("username") ?? "");
   }, []);
 
-  const transaction = async (token) => {
+  interface TransactionData {
+    amount: number;
+    description: string;
+    username: string;
+    currency: string;
+  }
+
+  const transaction = async (token: string | null) => {
     try {
       await axios.post(
         `${config.backend.url}/transaction/submit`,
@@ -26,7 +33,7 @@ function TransactionSubmit() {
           description: description,
           username: username,
           currency: currency
-        },
+        } as TransactionData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -40,11 +47,11 @@ function TransactionSubmit() {
     }
   };
 
-  const handleTransactionFormSubmit = async (event) => {
+  const handleTransactionFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     // Retrieve token from session cookie
-    const token = getTokenFromCookie();
+    const token: string | null = getTokenFromCookie();
 
     if (!token) {
       setErrorMessage("Token not found. Please log in again.");
@@ -77,7 +84,7 @@ function TransactionSubmit() {
             type="number"
             placeholder="Amount"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => setAmount(parseFloat(e.target.value))}
           />
           <select
           value={currency}

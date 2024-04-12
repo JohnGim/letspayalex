@@ -38,6 +38,8 @@
     }
   },
   "dependencies": {
+    "@emotion/core": "^11.0.0",
+    "@emotion/styled": "^11.11.5",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

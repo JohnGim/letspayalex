@@ -9,9 +9,20 @@ function GroupList() {
   const [groupList, setGroupList] = useState([]);
 
   useEffect(() => {
-    setUsername(sessionStorage.getItem("username"));
+    setUsername(sessionStorage.getItem("username") ?? "");
     fetchGroupList();
   }, []);
+
+  const getTokenFromCookie = () => {
+    const cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+      const [name, value] = cookie.split("=");
+      if (name === "token") {
+        return value;
+      }
+    }
+    return null;
+  };
 
   const fetchGroupList = async () => {
     try {
@@ -40,18 +51,7 @@ function GroupList() {
     }
   };
 
-  const getTokenFromCookie = () => {
-    const cookies = document.cookie.split("; ");
-    for (let cookie of cookies) {
-      const [name, value] = cookie.split("=");
-      if (name === "token") {
-        return value;
-      }
-    }
-    return null;
-  };
-
-  const calculateHoursSince = (date) => {
+  const calculateHoursSince = (date: string) => {
     return ((Date.now() - Date.parse(date))/3600000).toFixed(2);
   };
 
@@ -72,7 +72,7 @@ function GroupList() {
               </tr>
             </thead>
             <tbody>
-              {groupList.map((group, index) => (
+              {groupList.map((group: { groupname: string, members: string[], createdAt: string }, index) => (
                 <tr key={index}>
                   <td>{group.groupname}</td>
                   <td>{group.members.join(", ")}</td>

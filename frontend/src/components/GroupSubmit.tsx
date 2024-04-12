@@ -11,32 +11,32 @@ function GroupSubmit() {
   const [groupname, setGroupName] = useState("Let's get hyped");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const memberInputRefs = useRef([]);
-  const usernameRef = useRef(""); // Using useRef to store username
+  const memberInputRefs = useRef([] as React.RefObject<HTMLInputElement>[]);
+  const usernameRef = useRef(sessionStorage.getItem("username") ?? ""); // Using useRef to store username
 
   useEffect(() => {
-    usernameRef.current = sessionStorage.getItem("username"); // Storing username
+    usernameRef.current = sessionStorage.getItem("username") ?? ""; // Storing username
   }, []);
 
   useEffect(() => {
-    memberInputRefs.current = members.map(() => React.createRef());
+    memberInputRefs.current = members.map(() => React.createRef<HTMLInputElement>());
   }, [members]);
 
   const addMemberRow = () => {
     setMembers([...members, { name: "" }]);
   };
 
-  const handleMemberKeyDown = (event, index) => {
+  const handleMemberKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, index: number) => {
     if (event.key === "Enter" || event.key === "Tab") {
       event.preventDefault();
       addMemberRow();
-      if (memberInputRefs.current[index + 1] && memberInputRefs.current[index + 1].current) {
-        memberInputRefs.current[index + 1].current.focus();
+      if ((memberInputRefs.current[index + 1] as React.RefObject<HTMLInputElement>)?.current) {
+        (memberInputRefs.current[index + 1] as React.RefObject<HTMLInputElement>)?.current?.focus();
       }
     }
   };
 
-  const handleGroupFormSubmit = async (event) => {
+  const handleGroupFormSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
     const token = getTokenFromCookie();
@@ -48,7 +48,7 @@ function GroupSubmit() {
 
     try {
       const memberNames = members.map(member => member.name);
-      
+
       await axios.post(
         `${config.backend.url}/group/submit`,
         {

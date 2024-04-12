@@ -1,4 +1,11 @@
-const currencySymbolMap = {
+interface CurrencySymbolMap {
+    [key: string]: {
+      symbol: string;
+      denom: number;
+    };
+}
+
+const currencySymbolMap:CurrencySymbolMap = {
   "USD": {"symbol": "$", "denom": -2},
   "EUR": {"symbol": "€", "denom": -2},
   "JPY": {"symbol": "¥", "denom": 0},
@@ -83,6 +90,5 @@ const currencySymbolMap = {
   "XPD": {"symbol": "oz t", "denom": 0}
 }
 ;
-  
+
   export default currencySymbolMap;
-  
