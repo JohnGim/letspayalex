@@ -14,7 +14,7 @@ function Login({ onLogin }: { onLogin: Function }) {
 
   const login = async () => {
     try {
-      const data = await loginUser(username, password);
+      const data: {token : string } = await loginUser(username, password);
       console.log("User logged in successfully!");
       document.cookie = `token=${data.token}; Secure; SameSite=Strict`;
       sessionStorage.setItem("username", username);

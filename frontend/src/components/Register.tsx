@@ -12,7 +12,7 @@ function Register({ onRegister }: { onRegister: Function }) {
 
   const register = async () => {
     try {
-      const { data } = await registerUser(username, password);
+      const data: { message: string, token: string } = await registerUser(username, password);
       console.log("User registered successfully!");
       sessionStorage.setItem("username", username);
       onRegister(username);
