@@ -1,12 +1,11 @@
 import Login from "../components/Login";
 import React from "react";
 import PropTypes from "prop-types";
-function LoginPage({onLogin}: {onLogin: Function}) {
-  return <Login onLogin={onLogin} />;
-}
+import UserContext from "../context/UserContext";
 
-LoginPage.propTypes = {
-  onLogin: PropTypes.func.isRequired
-};
+function LoginPage() {
+  const { setUsername } = React.useContext(UserContext);
+  return <Login onLogin={setUsername} />;
+}
 
 export default LoginPage;

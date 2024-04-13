@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../Styles/Header.css"; // Import CSS file for Header styles
+import UserContext from "../context/UserContext";
 import PropTypes from "prop-types";
 
-const Header = ({ username, onLogout }: { username: string | null, onLogout: () => void }) => {
+const Header = () => {
+  const { username, onLogout } = useContext(UserContext);
   const [transactionsMenuOpen, setTransactionsMenuOpen] = useState(false);
   const [groupsMenuOpen, setGroupsMenuOpen] = useState(false);
   const headerRef = useRef(null);
@@ -72,11 +74,6 @@ const Header = ({ username, onLogout }: { username: string | null, onLogout: () 
       </nav>
     </header>
   );
-};
-
-Header.propTypes = {
-  onLogout: PropTypes.func.isRequired,
-  username: PropTypes.string,
 };
 
 export default Header;

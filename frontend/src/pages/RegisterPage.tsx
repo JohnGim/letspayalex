@@ -1,13 +1,11 @@
 import PropTypes from "prop-types";
 import Register from "../components/Register";
 import React from "react";
+import UserContext from "../context/UserContext";
 
-function RegisterPage({onRegister}: {onRegister: Function}) {
-  return <Register onRegister={ onRegister }/>;
+function RegisterPage() {
+  const { setUsername } = React.useContext(UserContext);
+  return <Register onRegister={ setUsername }/>;
 }
-
-RegisterPage.propTypes = {
-  onRegister: PropTypes.func.isRequired
-};
 
 export default RegisterPage;
