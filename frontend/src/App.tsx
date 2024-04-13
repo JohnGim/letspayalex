@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./Styles/global.css";
-import Header from "./components/Header";
+import Navbar from "./layout/Navbar";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -25,7 +25,7 @@ function App() {
     <UserContext.Provider value={{ username, setUsername, onLogout }}>
       <Router>
         <div className="container">
-          <Header /> {}
+          <Navbar /> {}
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
