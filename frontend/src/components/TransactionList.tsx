@@ -3,6 +3,7 @@ import axios from "axios";
 import "../Styles/TransactionList.css";
 import config from "../config";
 import currencySymbolMap from "./CurrencySymbolMap";
+import { Container, CssBaseline } from "@mui/material";
 
 function TransactionList() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -125,52 +126,55 @@ function TransactionList() {
   };
 
   return (
-    <div className="transaction-container">
-      <h2>Transactions List</h2>
-      <p>{`Alex needs some love! ${username}.`}</p>
-      {errorMessage && <p className="error">{errorMessage}</p>}
-      <div className="row-container">
-        <div className="currency-select">
-          <select value={selectedGlobalCurrency} onChange={handleCurrencyChange}>
-            {Object.keys(currencySymbolMap).map((currencyCode) => (
-              <option key={currencyCode} value={currencyCode}>
-                {currencyCode}
-              </option>
-            ))}
-          </select>
-          <button onClick={updateCurrencies} className={currenciesUpdated ? "updated" : ""}>
-            {currenciesUpdated ? "Currencies updated!" : "Update currencies"}
-          </button>
+    <Container component="main" maxWidth="lg">
+      <CssBaseline />
+      <div className="transaction-container">
+        <h2>Transactions List</h2>
+        <p>{`Alex needs some love! ${username}.`}</p>
+        {errorMessage && <p className="error">{errorMessage}</p>}
+        <div className="row-container">
+          <div className="currency-select">
+            <select value={selectedGlobalCurrency} onChange={handleCurrencyChange}>
+              {Object.keys(currencySymbolMap).map((currencyCode) => (
+                <option key={currencyCode} value={currencyCode}>
+                  {currencyCode}
+                </option>
+              ))}
+            </select>
+            <button onClick={updateCurrencies} className={currenciesUpdated ? "updated" : ""}>
+              {currenciesUpdated ? "Currencies updated!" : "Update currencies"}
+            </button>
+          </div>
+          {totalSum !== 0 && (
+            <div className="total-sum-container">
+              <span>{currencySymbolMap[selectedGlobalCurrency]["symbol"]} {roundToLowestDenomination(totalSum, selectedGlobalCurrency)} </span>
+            </div>
+          )}
         </div>
-        {totalSum !== 0 && (
-          <div className="total-sum-container">
-            <span>{currencySymbolMap[selectedGlobalCurrency]["symbol"]} {roundToLowestDenomination(totalSum, selectedGlobalCurrency)} </span>
+        {transactions.length > 0 && (
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Amount</th>
+                  <th>Currency</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transactions.map((transaction: any, index: number) => (
+                  <tr key={index}>
+                    <td>{transaction.amount}</td>
+                    <td>{currencySymbolMap[transaction.currency]["symbol"]}</td>
+                    <td>{transaction.description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
-      {transactions.length > 0 && (
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>Amount</th>
-                <th>Currency</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((transaction: any, index: number) => (
-                <tr key={index}>
-                  <td>{transaction.amount}</td>
-                  <td>{currencySymbolMap[transaction.currency]["symbol"]}</td>
-                  <td>{transaction.description}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
+    </Container>
   );
 }
 

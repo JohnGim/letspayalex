@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import "../Styles/Login.css";
 import { loginUser } from "../services/userService";
 import { AxiosError } from "axios";
 import Avatar from '@mui/material/Avatar';

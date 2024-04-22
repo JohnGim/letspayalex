@@ -1,5 +1,4 @@
 import * as React from 'react';
-import "../Styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/userService";
 import { AxiosError } from "axios";

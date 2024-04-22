@@ -3,9 +3,10 @@ import axios from "axios";
 import "../Styles/TransactionSubmit.css";
 import config from "../config";
 import currencySymbolMap from "./CurrencySymbolMap";
+import { Container, CssBaseline } from "@mui/material";
 
 
-function TransactionSubmit() {
+export default function TransactionSubmit() {
   const [amount, setAmount] = useState(1.00);
   const [currency, setCurrency] = useState("EUR");
   const [description, setDescription] = useState("coffee");
@@ -75,42 +76,43 @@ function TransactionSubmit() {
   };
 
   return (
-    <div className="transaction-container">
-      <h2>Enter transaction</h2>
-      <p>{`Alex let you borrow money? Or you're just really nice, ${username}`}!</p>
-      <form onSubmit={handleTransactionFormSubmit}>
-        <div className="input-amount-group">
-          <input
-            type="number"
-            placeholder="Amount"
-            value={amount}
-            onChange={(e) => setAmount(parseFloat(e.target.value))}
-          />
-          <select
-          value={currency}
-          onChange={(e) => {
-            setCurrency(e.target.value); // Update currency state
-          }}
-        >
-          {Object.keys(currencySymbolMap).map((currencyCode) => (
-            <option key={currencyCode} value={currencyCode}>
-              {currencyCode}
-            </option>
-          ))}
-        </select>
-          <input
-            type="text"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <button type="submit">Submit Transaction</button>
-      </form>
-      {successMessage && <p className="success">{successMessage}</p>}
-      {errorMessage && <p className="error">{errorMessage}</p>}
-    </div>
+    <Container component="main" maxWidth="lg">
+      <CssBaseline />
+      <div className="transaction-container">
+        <h2>Enter transaction</h2>
+        <p>{`Alex let you borrow money? Or you're just really nice, ${username}`}!</p>
+        <form onSubmit={handleTransactionFormSubmit}>
+          <div className="input-amount-group">
+            <input
+              type="number"
+              placeholder="Amount"
+              value={amount}
+              onChange={(e) => setAmount(parseFloat(e.target.value))}
+            />
+            <select
+            value={currency}
+            onChange={(e) => {
+              setCurrency(e.target.value); // Update currency state
+            }}
+          >
+            {Object.keys(currencySymbolMap).map((currencyCode) => (
+              <option key={currencyCode} value={currencyCode}>
+                {currencyCode}
+              </option>
+            ))}
+          </select>
+            <input
+              type="text"
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <button type="submit">Submit Transaction</button>
+        </form>
+        {successMessage && <p className="success">{successMessage}</p>}
+        {errorMessage && <p className="error">{errorMessage}</p>}
+      </div>
+    </Container>
   );
 }
-
-export default TransactionSubmit;

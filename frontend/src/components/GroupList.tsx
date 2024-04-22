@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../Styles/GroupList.css";
 import config from "../config";
+import { Container, CssBaseline } from "@mui/material";
 
 function GroupList() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -56,35 +57,38 @@ function GroupList() {
   };
 
   return (
-    <div className="group-list-container">
-      <h2>Groups List</h2>
-      <p>{`You're pretty popular, ${username}.`}</p>
-      {errorMessage && <p className="error">{errorMessage}</p>}
-      {groupList.length > 0 && (
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Members</th>
-                <th>Buddies since</th>
-                <th>{"So that's like"}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {groupList.map((group: { groupname: string, members: string[], createdAt: string }, index) => (
-                <tr key={index}>
-                  <td>{group.groupname}</td>
-                  <td>{group.members.join(", ")}</td>
-                  <td>{group.createdAt}</td>
-                  <td>{String(calculateHoursSince(group.createdAt))+ " hours"}</td>
+    <Container component="main" maxWidth="lg">
+      <CssBaseline />
+      <div className="group-list-container">
+        <h2>Groups List</h2>
+        <p>{`You're pretty popular, ${username}.`}</p>
+        {errorMessage && <p className="error">{errorMessage}</p>}
+        {groupList.length > 0 && (
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Members</th>
+                  <th>Buddies since</th>
+                  <th>{"So that's like"}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
+              </thead>
+              <tbody>
+                {groupList.map((group: { groupname: string, members: string[], createdAt: string }, index) => (
+                  <tr key={index}>
+                    <td>{group.groupname}</td>
+                    <td>{group.members.join(", ")}</td>
+                    <td>{group.createdAt}</td>
+                    <td>{String(calculateHoursSince(group.createdAt))+ " hours"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </Container>
   );
 }
 

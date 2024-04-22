@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./Styles/global.scss";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
-import HomePage from "./pages/HomePage";
-import TransactionSubmitPage from "./pages/TransactionSubmitPage";
+import Home from "./components/Home";
+import TransactionSubmit from "./components/TransactionSubmit";
 import TransactionListPage from "./pages/TransactionListPage";
 import GroupListPage from "./pages/GroupListPage";
 import GroupSubmitPage from "./pages/GroupSubmitPage";
@@ -76,10 +76,10 @@ function App() {
           <Navbar />
           <div className="container">
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/transaction/submit" element={<TransactionSubmitPage />} />
+              <Route path="/transaction/submit" element={<TransactionSubmit />} />
               <Route path="/transaction/list" element={<TransactionListPage />} />
               <Route path="/group/list" element={<GroupListPage />} />
               <Route path="/group/submit" element={<GroupSubmitPage />} />

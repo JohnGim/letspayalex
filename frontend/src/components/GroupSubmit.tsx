@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../Styles/GroupSubmit.css";
 import config from "../config";
+import { Container, CssBaseline } from "@mui/material";
 
 function GroupSubmit() {
   const [members, setMembers] = useState([
@@ -82,45 +83,48 @@ function GroupSubmit() {
   };
 
   return (
-    <div className="group-submit-container">
-      <h2>{"Let's make friends"}</h2>
-      <p>{`Alex let you borrow money? Or you're just really nice, ${usernameRef.current}! Press tab to enter another member.`}</p>
-      <form onSubmit={handleGroupFormSubmit}>
-        <div className="group-inputs">
-          <div className="input-group">
-            <label htmlFor="groupname">Group Name:</label>
-            <input
-              type="text"
-              id="groupname"
-              value={groupname}
-              onChange={(e) => setGroupName(e.target.value)}
-            />
+    <Container component="main" maxWidth="lg">
+      <CssBaseline />
+      <div className="group-submit-container">
+        <h2>{"Let's make friends"}</h2>
+        <p>{`Alex let you borrow money? Or you're just really nice, ${usernameRef.current}! Press tab to enter another member.`}</p>
+        <form onSubmit={handleGroupFormSubmit}>
+          <div className="group-inputs">
+            <div className="input-group">
+              <label htmlFor="groupname">Group Name:</label>
+              <input
+                type="text"
+                id="groupname"
+                value={groupname}
+                onChange={(e) => setGroupName(e.target.value)}
+              />
+            </div>
+            <div className="members-container">
+              {members.map((member, index) => (
+                <div key={index} className="member-input-group">
+                  <label>{`Member ${index + 1}:`}</label>
+                  <input
+                    type="text"
+                    placeholder={`Enter member ${index + 1}`}
+                    value={member.name}
+                    onChange={(e) => {
+                      const newMembers = [...members];
+                      newMembers[index].name = e.target.value;
+                      setMembers(newMembers);
+                    }}
+                    onKeyDown={(e) => handleMemberKeyDown(e, index)}
+                    ref={memberInputRefs.current[index]}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="members-container">
-            {members.map((member, index) => (
-              <div key={index} className="member-input-group">
-                <label>{`Member ${index + 1}:`}</label>
-                <input
-                  type="text"
-                  placeholder={`Enter member ${index + 1}`}
-                  value={member.name}
-                  onChange={(e) => {
-                    const newMembers = [...members];
-                    newMembers[index].name = e.target.value;
-                    setMembers(newMembers);
-                  }}
-                  onKeyDown={(e) => handleMemberKeyDown(e, index)}
-                  ref={memberInputRefs.current[index]}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-        <button type="submit">{"Let's share!"}</button>
-      </form>
-      {successMessage && <p className="success">{successMessage}</p>}
-      {errorMessage && <p className="error">{errorMessage}</p>}
-    </div>
+          <button type="submit">{"Let's share!"}</button>
+        </form>
+        {successMessage && <p className="success">{successMessage}</p>}
+        {errorMessage && <p className="error">{errorMessage}</p>}
+      </div>
+    </Container>
   );
 }
 
