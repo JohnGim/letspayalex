@@ -3,8 +3,9 @@ import "../Styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/userService";
 import PropTypes from "prop-types";
+import { AxiosError } from "axios";
 
-function Register({ onRegister }: { onRegister: Function }) {
+function Register({ onRegister }: { onRegister: (username: string) => void }) {
   const [username, setUsername] = useState("user");
   const [password, setPassword] = useState("password");
   const [errorMessage, setErrorMessage] = useState("");
@@ -12,17 +13,12 @@ function Register({ onRegister }: { onRegister: Function }) {
 
   const register = async () => {
     try {
-      const data: { message: string, token: string } = await registerUser(username, password);
-      console.log("User registered successfully!");
-      sessionStorage.setItem("username", username);
-      onRegister(username);
-      console.log(data.token);
-      document.cookie = `token=${data.token}; Secure; SameSite=Strict`;
+      await registerUser(username, password, onRegister);
       navigate("/transaction/submit");
     } catch (error) {
       console.error("An error occurred during registration:", error);
-      if ((error as any).response && (error as any).response.data && (error as any).response.data.message) {
-        setErrorMessage((error as any).response.data.message); // Set the error message from the response
+      if (error instanceof AxiosError && error.response?.data?.message) {
+        setErrorMessage(error.response.data.message); // Set the error message from the response
       } else {
         setErrorMessage("An error occurred during registration."); // Set a generic error message
       }
