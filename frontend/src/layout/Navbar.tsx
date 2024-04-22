@@ -15,6 +15,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { Switch } from "@mui/material";
 
 const pagesLanding = [
   { name: "Home", path: "/" },
@@ -33,12 +34,15 @@ const settings = [
 ];
 
 function Navbar () {
-  const { username, onLogout } = useContext(UserContext);
+  const { username, onLogout, darkMode, setDarkMode } = useContext(UserContext);
   const [transactionsMenuOpen, setTransactionsMenuOpen] = useState(false);
   const [groupsMenuOpen, setGroupsMenuOpen] = useState(false);
   const headerRef = useRef(null);
   const navigate = useNavigate();
 
+  const toggleMode = () => {
+    setDarkMode(!darkMode);
+  };
   const pages = useMemo(() => {
     return username ? pagesLoggedIn : pagesLanding;
   }, [username]);
@@ -177,6 +181,10 @@ function Navbar () {
               ))}
               <MenuItem key="Logout" onClick={onLogout} component={NavLink} to={"/"}>
                 <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
+              <MenuItem key="Switch" onClick={toggleMode}>
+                <Typography textAlign="center">Dark Mode</Typography>
+                <Switch checked={darkMode} onChange={toggleMode} inputProps={{ 'aria-label': 'controlled'}} />
               </MenuItem>
             </Menu>
           </Box>
